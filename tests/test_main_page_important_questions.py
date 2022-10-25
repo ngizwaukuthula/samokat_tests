@@ -1,14 +1,5 @@
 import allure
-from pages.main import MainPage
-
-@allure.step('Проверяем соответствие текстов вопроса и ответа')
-def check_question_answer_pair(driver, number, question, answer):
-
-    page = MainPage(driver)
-    page.get()
-    page.click_on_question_with_text(number, question)
-
-    return page.check_answer_with_this_text_is_displayed(answer)
+from utils import check_question_answer_pair
 
 @allure.title("Проверка вопрос-ответа про стоимость")
 def test_price_question(driver):

@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions
 import allure
 import random
 import string
+from pages.main import MainPage
 
 def random_string(length, language = 'ru'):
     """Генерит рандомную строку заданной длины"""
@@ -57,3 +58,12 @@ def switch_to_new_opened_window(driver):
         if window_handle != current_window:
             driver.switch_to.window(window_handle)
             break
+
+@allure.step('Проверяем соответствие текстов вопроса и ответа')
+def check_question_answer_pair(driver, number, question, answer):
+
+    page = MainPage(driver)
+    page.get()
+    page.click_on_question_with_text(number, question)
+
+    return page.check_answer_with_this_text_is_displayed(answer)
