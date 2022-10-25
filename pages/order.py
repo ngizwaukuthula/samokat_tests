@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 from utils import *
 from pages.common import CommonControls
+from time import sleep
 
 class OrderPage:
 
@@ -29,7 +30,7 @@ class OrderPage:
     continue_button = [By.XPATH, ".//button[@class = 'Button_Button__ra12g Button_Middle__1CSJM' and text() = 'Далее']"]
 
     # Выпадающий список со станциями метро
-    metro_stations_list = [By.XPATH, ".//div[@class = 'select-search__select']/*"]
+    metro_stations_list = [By.XPATH, ".//div[@class = 'select-search__select']/*/li"]
 
     # Поле ввода даты доставки заказа
     delivery_date_input = [By.XPATH, ".//input[starts-with(@class, 'Input_Input__1iN_Z') and @placeholder = '* Когда привезти самокат']"]
@@ -90,10 +91,13 @@ class OrderPage:
             expected_conditions.element_to_be_clickable(self.metro_station_name_input))
         metro_input = self.driver.find_element(*self.metro_station_name_input)
         metro_input.click()
+        WebDriverWait(self.driver, 3).until(
+            expected_conditions.element_to_be_clickable(self.metro_stations_list))
         metro_stations = self.driver.find_elements(*self.metro_stations_list)
         random.choice(metro_stations).click()
 
         click_on_element(self.driver, self.continue_button)
+
         fill_in_field(self.driver, self.delivery_date_input, client_info['delivery_date'])
 
         WebDriverWait(self.driver, 3).until(
