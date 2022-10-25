@@ -19,8 +19,6 @@ def test_top_button_positive_order_flow(driver):
 
     assert order_page.check_element_is_displayed(order_page.order_confirmation_title)
 
-    driver.close()
-
 
 @allure.title("Проверка заказа по нижней кнопке")
 @allure.description("Позитивный сценарий заказа с рандомными корректными данными и входом по нижней кнопке")
@@ -37,7 +35,6 @@ def test_bottom_button_positive_order_flow(driver):
 
     assert order_page.check_element_is_displayed(order_page.order_confirmation_title)
 
-    driver.close()
 
 @allure.title("Проверка перехода через лого Яндекса")
 @allure.description("Проверка перехода на страницу Самоката по клику на лого Яндекса.")
@@ -54,8 +51,6 @@ def test_yandex_main_page_transition(driver):
 
     assert "dzen.ru" in driver.current_url, driver.current_url
 
-    # Чтобы закрыть обе вкладки и браузер
-    driver.quit()
 
 @allure.title("Проверка перехода через лого Самоката")
 @allure.description("Проверка перехода на страницу Самоката по клику на лого Самоката.")
@@ -69,5 +64,3 @@ def test_samokat_transition(driver):
         lambda driver: driver.current_url != order_page.url)
 
     assert driver.current_url == 'https://qa-scooter.praktikum-services.ru/'
-
-    driver.close()

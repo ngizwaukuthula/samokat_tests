@@ -6,4 +6,6 @@ def driver():
 
     driver = webdriver.Firefox()
 
-    return driver
+    yield driver
+
+    driver.quit()
