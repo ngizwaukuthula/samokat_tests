@@ -34,8 +34,14 @@ def click_on_element(driver, locator):
     """Кликнуть на кнопку с данным локатором"""
 
     WebDriverWait(driver, 3).until(
-        expected_conditions.element_to_be_clickable(locator))
+        expected_conditions.presence_of_element_located(locator))
+
     button = driver.find_element(*locator)
+    driver.execute_script("arguments[0].scrollIntoView();", button)
+
+    WebDriverWait(driver, 3).until(
+        expected_conditions.element_to_be_clickable(locator))
+
     button.click()
 
 @allure.step('Заполняем текстовое поле {locator}')
