@@ -30,35 +30,35 @@ def random_client_info():
     return info
 
 @allure.step('Кликаем на элемент {locator}')
-def click_on_element(driver, locator):
+def click_on_element(driver, locator, time_out=5):
     """Кликнуть на кнопку с данным локатором"""
 
-    WebDriverWait(driver, 3).until(
+    WebDriverWait(driver, time_out).until(
         expected_conditions.presence_of_element_located(locator))
 
     button = driver.find_element(*locator)
     driver.execute_script("arguments[0].scrollIntoView();", button)
 
-    WebDriverWait(driver, 3).until(
+    WebDriverWait(driver, time_out).until(
         expected_conditions.element_to_be_clickable(locator))
 
     button.click()
 
 @allure.step('Заполняем текстовое поле {locator}')
-def fill_in_field(driver, locator, text):
+def fill_in_field(driver, locator, text, time_out=5):
     """Заполнить поле с данным локатором данным текстом"""
 
-    WebDriverWait(driver, 3).until(
+    WebDriverWait(driver, time_out).until(
         expected_conditions.element_to_be_clickable((locator)))
     name_input = driver.find_element(*locator)
     name_input.click()
     name_input.send_keys(text)
 
 @allure.step('Переходим в новое открытое окно')
-def switch_to_new_opened_window(driver):
+def switch_to_new_opened_window(driver, time_out=5):
     """Переключает WebDriver на новое открытое окно или вкладку"""
 
-    WebDriverWait(driver, 3).until(expected_conditions.new_window_is_opened)
+    WebDriverWait(driver, time_out).until(expected_conditions.new_window_is_opened)
     current_window = driver.current_window_handle
     for window_handle in driver.window_handles:
         if window_handle != current_window:

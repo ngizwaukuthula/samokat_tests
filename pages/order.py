@@ -62,18 +62,19 @@ class OrderPage:
     order_confirmation_title = [By.XPATH, ".//div[@class = 'Order_ModalHeader__3FDaJ' and text() = 'Заказ оформлен']"]
 
 
-    def __init__(self, driver):
+    def __init__(self, driver, time_out=5):
 
         self.driver = driver
+        self.time_out = time_out
 
     # Перейти на страницу заказа и дождаться, пока она загрузится
     def get(self):
         self.driver.get(self.url)
-        WebDriverWait(self.driver, 3).until(expected_conditions.url_to_be(self.url))
+        WebDriverWait(self.driver, self.time_out).until(expected_conditions.url_to_be(self.url))
 
     @allure.step('Проверяем, что отображается элемент: {locator}')
     def check_element_is_displayed(self, locator):
-        WebDriverWait(self.driver, 3).until(
+        WebDriverWait(self.driver, self.time_out).until(
             expected_conditions.presence_of_element_located(locator))
         element = self.driver.find_element(*locator)
 
@@ -86,11 +87,11 @@ class OrderPage:
         fill_in_field(self.driver, self.phone_number_input, client_info['phone_number'])
         fill_in_field(self.driver, self.address_input, client_info['address'])
 
-        WebDriverWait(self.driver, 3).until(
+        WebDriverWait(self.driver, self.time_out).until(
             expected_conditions.element_to_be_clickable(self.metro_station_name_input))
         metro_input = self.driver.find_element(*self.metro_station_name_input)
         metro_input.click()
-        WebDriverWait(self.driver, 3).until(
+        WebDriverWait(self.driver, self.time_out).until(
             expected_conditions.element_to_be_clickable(self.metro_stations_list))
         metro_stations = self.driver.find_elements(*self.metro_stations_list)
         random.choice(metro_stations).click()
@@ -99,13 +100,13 @@ class OrderPage:
 
         fill_in_field(self.driver, self.delivery_date_input, client_info['delivery_date'])
 
-        WebDriverWait(self.driver, 3).until(
+        WebDriverWait(self.driver, self.time_out).until(
             expected_conditions.element_to_be_clickable(self.day_selected_on_date_picker))
         day_selected = self.driver.find_element(*self.day_selected_on_date_picker)
         day_selected.click()
 
 
-        WebDriverWait(self.driver, 3).until(
+        WebDriverWait(self.driver, self.time_out).until(
             expected_conditions.element_to_be_clickable(self.rental_period_dropped_down))
         rental_period_dropped_down = self.driver.find_element(*self.rental_period_dropped_down)
         rental_period_dropped_down.click()
@@ -114,7 +115,7 @@ class OrderPage:
         random_rental_period_option.click()
 
         scooter_color_checkbox = random.choice([self.scooter_black_color_checkbox, self.scooter_grey_color_checkbox])
-        WebDriverWait(self.driver, 3).until(
+        WebDriverWait(self.driver, self.time_out).until(
             expected_conditions.element_to_be_clickable(scooter_color_checkbox))
         scooter_color_checkbox_element = self.driver.find_element(*scooter_color_checkbox)
         scooter_color_checkbox_element.click()

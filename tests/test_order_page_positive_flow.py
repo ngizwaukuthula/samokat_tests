@@ -46,7 +46,7 @@ def test_yandex_main_page_transition(driver):
 
     switch_to_new_opened_window(driver)
 
-    WebDriverWait(driver, 3).until(
+    WebDriverWait(driver, 5).until(
             lambda driver: driver.current_url != "about:blank")
 
     assert "dzen.ru" in driver.current_url, driver.current_url
@@ -60,7 +60,7 @@ def test_samokat_transition(driver):
     order_page.get()
     click_on_element(driver, common_controls.samokat_logo)
 
-    WebDriverWait(driver, 3).until(
+    WebDriverWait(driver, 5).until(
         lambda driver: driver.current_url != order_page.url)
 
     assert driver.current_url == 'https://qa-scooter.praktikum-services.ru/'
