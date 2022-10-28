@@ -1,6 +1,4 @@
-import allure
 from pages.order import OrderPage
-from pages.main import MainPage
 from pages.common import CommonControls
 from utils import *
 
