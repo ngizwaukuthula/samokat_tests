@@ -39,6 +39,13 @@ class MainPage:
 
         return self.driver.find_element(self.answer_item[0], self.answer_item[1].format(text)).is_displayed()
 
+    @allure.step('Проверяем соответствие текстов вопроса и ответа')
+    def check_question_answer_pair(self, number, question, answer):
+
+        self.click_on_question_with_text(number, question)
+
+        return self.check_answer_with_this_text_is_displayed(answer)
+
     @allure.step('Кликаем на вопрос: {text}')
     def click_on_question_with_text(self, number, text):
 

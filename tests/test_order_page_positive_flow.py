@@ -1,5 +1,6 @@
 from pages.order import OrderPage
 from pages.common import CommonControls
+from pages.main import MainPage
 from utils import *
 
 @allure.title("Проверка заказа по верхней кнопке")
