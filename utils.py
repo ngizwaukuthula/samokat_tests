@@ -48,10 +48,16 @@ def fill_in_field(driver, locator, text, time_out=5):
     """Заполнить поле с данным локатором данным текстом"""
 
     WebDriverWait(driver, time_out).until(
+        expected_conditions.presence_of_element_located((locator)))
+
+    field = driver.find_element(*locator)
+    driver.execute_script("arguments[0].scrollIntoView();", field)
+
+    WebDriverWait(driver, time_out).until(
         expected_conditions.element_to_be_clickable((locator)))
-    name_input = driver.find_element(*locator)
-    name_input.click()
-    name_input.send_keys(text)
+
+    field.click()
+    field.send_keys(text)
 
 @allure.step('Переходим в новое открытое окно')
 def switch_to_new_opened_window(driver, time_out=5):
