@@ -44,10 +44,9 @@ def test_yandex_main_page_transition(driver):
 
     switch_to_new_opened_window(driver)
 
-    WebDriverWait(driver, 5).until(
-            lambda driver: driver.current_url != "about:blank")
+    wait_until_url_is_changed(driver, "about:blank")
 
-    assert "dzen.ru" in driver.current_url, driver.current_url
+    assert "dzen.ru" in driver.current_url
 
 
 @allure.title("Проверка перехода через лого Самоката")
@@ -58,7 +57,6 @@ def test_samokat_transition(driver):
     order_page.get()
     click_on_element(driver, common_controls.samokat_logo)
 
-    WebDriverWait(driver, 5).until(
-        lambda driver: driver.current_url != order_page.url)
+    wait_until_url_is_changed(driver, OrderPage.url)
 
     assert driver.current_url == 'https://qa-scooter.praktikum-services.ru/'

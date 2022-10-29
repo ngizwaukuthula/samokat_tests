@@ -73,3 +73,8 @@ def check_question_answer_pair(driver, number, question, answer):
     page.click_on_question_with_text(number, question)
 
     return page.check_answer_with_this_text_is_displayed(answer)
+
+@allure.step('Ждем, пока изменится с {current_url} на любой другой')
+def wait_until_url_is_changed(driver, current_url, time_out=5):
+    WebDriverWait(driver, time_out).until(
+            lambda driver: driver.current_url != current_url)
