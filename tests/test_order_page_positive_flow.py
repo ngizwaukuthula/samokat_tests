@@ -16,7 +16,7 @@ def test_top_button_positive_order_flow(driver):
     order_page = OrderPage(driver)
     order_page.fill_in_order_form(random_client_info())
 
-    assert order_page.check_element_is_displayed(order_page.order_confirmation_title)
+    assert is_element_displayed(driver, order_page.order_confirmation_title)
 
 
 @allure.title("Проверка заказа по нижней кнопке")
@@ -29,10 +29,11 @@ def test_bottom_button_positive_order_flow(driver):
     common_controls.accept_cookies()
 
     click_on_element(driver, main_page.bottom_order_button)
+
     order_page = OrderPage(driver)
     order_page.fill_in_order_form(random_client_info())
 
-    assert order_page.check_element_is_displayed(order_page.order_confirmation_title)
+    assert is_element_displayed(driver, order_page.order_confirmation_title)
 
 
 @allure.title("Проверка перехода через лого Яндекса")

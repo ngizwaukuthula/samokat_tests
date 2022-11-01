@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from utils import *
 
-
 class OrderPage:
 
     # Адрес страницы
@@ -70,13 +69,6 @@ class OrderPage:
         self.driver.get(self.url)
         WebDriverWait(self.driver, self.time_out).until(expected_conditions.url_to_be(self.url))
 
-    @allure.step('Проверяем, что отображается элемент: {locator}')
-    def check_element_is_displayed(self, locator):
-        WebDriverWait(self.driver, self.time_out).until(
-            expected_conditions.presence_of_element_located(locator))
-        element = self.driver.find_element(*locator)
-
-        return element.is_displayed()
 
     @allure.step('Заполняем форму заказа')
     def fill_in_order_form(self, client_info):

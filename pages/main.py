@@ -1,24 +1,53 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-import allure
 
 class MainPage:
 
     # Адрес страницы
     url = "https://qa-scooter.praktikum-services.ru/"
 
-    # Элемент списка с вопросами в разделе "Вопросы о важном"
-    question_item = [By.XPATH, ".//div[@id='accordion__heading-{}' and text() = '{}']"]
-
-    # Элемент списка с ответами в разделе "Вопросы о важном"
-    answer_item = [By.XPATH, ".//p[text() = '{}']"]
+    # Ответы и вопросы в FAQ-блоке
+    faq_block = {
+        'price': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Сколько это стоит? И как оплатить?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Сутки — 400 рублей. Оплата курьеру — наличными или картой.']"]
+        },
+        'multiple_scooters': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Хочу сразу несколько самокатов! Так можно?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим.']"]
+        },
+        'rent_time': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Как рассчитывается время аренды?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Допустим, вы оформляете заказ на 8 мая. Мы привозим самокат 8 мая в течение дня. Отсчёт времени аренды начинается с момента, когда вы оплатите заказ курьеру. Если мы привезли самокат 8 мая в 20:30, суточная аренда закончится 9 мая в 20:30.']"]
+        },
+        'same_day': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Можно ли заказать самокат прямо на сегодня?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Только начиная с завтрашнего дня. Но скоро станем расторопнее.']"]
+        },
+        'changing_time': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Можно ли продлить заказ или вернуть самокат раньше?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010.']"]
+        },
+        'charger': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Вы привозите зарядку вместе с самокатом?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится.']"]
+        },
+        'cancel': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Можно ли отменить заказ?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои.']"]
+        },
+        'mkad': {
+            'question': [By.XPATH, ".//div[contains(@id, 'accordion__heading-') and text() = 'Я жизу за МКАДом, привезёте?']"],
+            'answer': [By.XPATH, ".//p[text() = 'Да, обязательно. Всем самокатов! И Москве, и Московской области.']"]
+        }
+    }
 
     # Верхняя кнопка заказа
     top_order_button = [By.XPATH, ".//button[@class = 'Button_Button__ra12g' and text() = 'Заказать']"]
 
     # Нижняя кнопка заказа
-    bottom_order_button = [By.XPATH, ".//button[@class = 'Button_Button__ra12g Button_Middle__1CSJM' and text() = 'Заказать']"]
+    bottom_order_button = [By.XPATH, ".//button[contains(@class, 'Button_Middle')]"]
 
     def __init__(self, driver, time_out=5):
 
@@ -30,31 +59,3 @@ class MainPage:
 
         self.driver.get(self.url)
         WebDriverWait(self.driver, self.time_out).until(expected_conditions.url_to_be(self.url))
-
-    @allure.step('Проверяем, что отображается ответ: {text}')
-    def check_answer_with_this_text_is_displayed(self, text):
-
-        WebDriverWait(self.driver, self.time_out).until(
-            expected_conditions.presence_of_element_located((self.answer_item[0], self.answer_item[1].format(text))))
-
-        return self.driver.find_element(self.answer_item[0], self.answer_item[1].format(text)).is_displayed()
-
-    @allure.step('Проверяем соответствие текстов вопроса и ответа')
-    def check_question_answer_pair(self, number, question, answer):
-
-        self.click_on_question_with_text(number, question)
-
-        return self.check_answer_with_this_text_is_displayed(answer)
-
-    @allure.step('Кликаем на вопрос: {text}')
-    def click_on_question_with_text(self, number, text):
-
-        WebDriverWait(self.driver, self.time_out).until(
-            expected_conditions.presence_of_element_located((self.question_item[0], self.question_item[1].format(number, text))))
-
-        question_element = self.driver.find_element(self.question_item[0], self.question_item[1].format(number, text))
-        self.driver.execute_script("arguments[0].scrollIntoView();", question_element)
-
-        WebDriverWait(self.driver, self.time_out).until(
-            expected_conditions.element_to_be_clickable((self.question_item[0], self.question_item[1].format(number, text))))
-        question_element.click()
