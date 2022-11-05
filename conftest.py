@@ -1,11 +1,12 @@
 from selenium import webdriver
-from pages.main import MainPage
 import pytest
 
 @pytest.fixture
 def driver():
 
+
     driver = webdriver.Firefox()
+    driver.maximize_window()
 
     yield driver
 
