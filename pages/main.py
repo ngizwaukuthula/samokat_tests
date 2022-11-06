@@ -47,7 +47,7 @@ class MainPage:
     top_order_button = [By.XPATH, ".//button[@class = 'Button_Button__ra12g' and text() = 'Заказать']"]
 
     # Нижняя кнопка заказа
-    bottom_order_button = [By.XPATH, ".//button[contains(@class, 'Button_Middle')]"]
+    bottom_order_button = [By.XPATH, ".//div/div/div/div/div/div/button[text()='Заказать']"]
 
     def __init__(self, driver, time_out=5):
 
